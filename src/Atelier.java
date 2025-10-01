@@ -8,7 +8,8 @@
  * La methode travailler() effectue n transformations successives, n etant un parametre
  * fourni a la creation de l'objet.
  */
-class Atelier {
+//Q2.1 : Ajout de extends Thread
+class Atelier extends Thread {
 
 	/**
 	 * Le stock de fourniture de depart
@@ -48,7 +49,9 @@ class Atelier {
     /**
      * Effectue nbTransfo transformations
      */
-    public void travailler() {
+    // Q2.1 : Modif de travailler en run
+    @Override
+    public void run() {
         for(; nbTransfo > 0; nbTransfo--)
             transformer();
     }

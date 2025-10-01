@@ -1,4 +1,4 @@
-s// PENSEZ A INDIQUER PAR DES COMMENTAIRES LES MODIFICATIONS APPORTEES A CE SQUELETTE AU FUR
+// PENSEZ A INDIQUER PAR DES COMMENTAIRES LES MODIFICATIONS APPORTEES A CE SQUELETTE AU FUR
 // ET A MESURE DE L'EVOLUTION DU CODE DEMANDEE DANS LE TP.
 
 /**
@@ -9,11 +9,14 @@ s// PENSEZ A INDIQUER PAR DES COMMENTAIRES LES MODIFICATIONS APPORTEES A CE SQUE
  * La methode fonctionner() fait travailler successivement les deux ateliers et affiche
  * l'etat des stocks a la fin des travaux.
  */
-class Usine {
+public class Usine {
 	/**
 	 * Stock de pieces a transformer
 	 */
     Stock stockDepart = new Stock("de depart", 10);
+
+    Stock stockIntermediaire = new Stock("intermédiaire", 0);
+
     /**
      * Stock de pieces transformees
      */
@@ -21,8 +24,8 @@ class Usine {
     /**
      * Ateliers de transformation
      */
-    Atelier atelier1 = new Atelier(stockDepart, stockFin, 5);
-    Atelier atelier2 = new Atelier(stockDepart, stockFin, 5);
+    Atelier atelier1 = new Atelier(stockDepart, stockIntermediaire, 10);
+    Atelier atelier2 = new Atelier(stockIntermediaire, stockFin, 10);
 
     /**
      * Effectuer le travail de l'usine
@@ -30,10 +33,21 @@ class Usine {
      * l'evolution de l'etat des stocks.
      */
     public void fonctionner() {
-    		atelier1.travailler();
-    		atelier2.travailler();
-    		stockDepart.afficher();
-    		stockFin.afficher();
+        /**
+         * Q2.1
+         */
+        atelier1.start();
+        atelier2.start();
+
+        try {
+            atelier1.join();
+            atelier2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        stockDepart.afficher();
+        stockFin.afficher();
     }
 
     /**
@@ -41,7 +55,11 @@ class Usine {
      * @param args Non utilise
      */
     public static void main(String[] args) {
-
+        /**
+         * Réponse à la question 1.3
+         */
+        Usine usine = new Usine();
+        usine.fonctionner();
 
 
     }

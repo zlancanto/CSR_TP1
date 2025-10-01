@@ -30,22 +30,40 @@ class Stock {
     /**
      * Poser une piece sur le haut de la pile de pieces
      */
-    public void stocker() {
+    //Q2.2 : Ajout de synchronized
+    public synchronized void stocker() {
         nbPieces++;
+        System.out.println(Thread.currentThread().getName() +
+                ": le stock " + nom + " contient " + nbPieces + " piece(s).");
+        notify();
     }
 
     /**
      * Saisir une piece sur le haut de la pile de pieces
      */
-    public void destocker() {
+    //Q2.2 : Ajout de synchronized
+    public synchronized void destocker() {
+        if (nbPieces == 0) {
+            try {
+                wait();
+            } catch(InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         nbPieces--;
+        System.out.println(Thread.currentThread().getName() +
+                ": le stock " + nom + " contient " + nbPieces + " piece(s).");
+        notify();
     }
 
     /**
      * Affiche l'etat de l'objet stock
      */
-    public void afficher() {
+    public synchronized void afficher() {
         System.out.println("Le stock " + nom + " contient " + nbPieces + " piece(s).");
     }
 
+    public int getNbPieces() {
+        return nbPieces;
+    }
 }
